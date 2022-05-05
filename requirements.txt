@@ -1,0 +1,4 @@
+joblib
+streamlit
+matplotlib
+git+https://github.com/ersilia-os/stylia.git
