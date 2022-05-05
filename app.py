@@ -6,9 +6,7 @@ import matplotlib.pyplot as plt
 import math
 from stylia.colors.colors import NamedColors
 
-st.set_page_config(layout="wide")
-
-st.title("Fast Forward Cohort Network")
+#st.title("Fast Forward Cohort Network")
 
 plt.rcParams['figure.facecolor'] = '#273346'
 
@@ -44,14 +42,6 @@ prompts = [
     "I thank you for...",
 
 ]
-
-
-if st.button("Migrate"):
-    random.shuffle(people)
-    edges = []
-    joblib.dump(edges, EDGES_FILE)
-    joblib.dump("...", PROMPT_FILE)
-    joblib.dump("...", FROM_PERSON_FILE)
 
 def circles(c_list, n):
     g_d_list = []  # graph data list
@@ -95,8 +85,7 @@ nodes = circles([1], len(people))
 people_nodes = dict((k, nodes[i]) for i,k in enumerate(people))
 
 # edges
-
-cols = st.columns(3)
+cols = st.columns(4)
 
 if cols[0].button("Random person"):
     from_person = random.choice(people)
@@ -104,12 +93,12 @@ if cols[0].button("Random person"):
 
 from_person = joblib.load(FROM_PERSON_FILE)
 
-cols[1].write(from_person)
+cols[0].write(from_person)
 
 if from_person != "...":
-    to_person = cols[2].selectbox("Pulls a thread to...", options=people)
+    to_person = cols[1].selectbox("Pulls a thread to...", options=people)
 
-if st.button('Random thread'):
+if cols[2].button('Random thread'):
     prompt = random.choice(prompts)
     joblib.dump(prompt, PROMPT_FILE)
 
@@ -117,7 +106,7 @@ prompt = joblib.load(PROMPT_FILE)
 st.subheader(prompt)
 
 edges = joblib.load(EDGES_FILE)
-if st.button('Connect'):
+if cols[3].button('Connect'):
     edges += [(from_person, to_person)]
 
 joblib.dump(edges, EDGES_FILE)
@@ -125,5 +114,14 @@ fig = plot(people_nodes, edges)
 
 st.pyplot(fig)
 
-if st.button("Save figure"):
+
+cols = st.columns(3)
+if cols[0].button("Migrate"):
+    random.shuffle(people)
+    edges = []
+    joblib.dump(edges, EDGES_FILE)
+    joblib.dump("...", PROMPT_FILE)
+    joblib.dump("...", FROM_PERSON_FILE)
+
+if cols[1].button("Save figure"):
     plt.savefig("network.png", dpi=600)
