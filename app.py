@@ -14,20 +14,12 @@ EDGES_FILE = "edges.joblib"
 PROMPT_FILE = "prompt.joblib"
 FROM_PERSON_FILE = "fromperson.joblib"
 
-people = [
-    "Ngan",
-    "Danny",
-    "Steven",
-    "Adrian",
-    "Miquel",
-    "Gemma",
-    "Achint",
-    "Jessica",
-    "Chris",
-    "Nathan",
-    "Michael",
-    "Diana"
-]
+PEOPLE_FILE = "people.txt"
+
+with open(PEOPLE_FILE, "r") as f:
+    people = []
+    for l in f:
+        people += [l.rstrip()]
 
 prompts = [
     "In one year, I see them...",
@@ -39,8 +31,7 @@ prompts = [
     "The main strength of their tech nonprofit is...",
     "One word to describe their tech nonprofit",
     "I would like to know more about their...",
-    "I thank you for...",
-
+    "I thank you for..."
 ]
 
 def circles(c_list, n):
